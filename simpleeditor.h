@@ -2,6 +2,7 @@
 #define SIMPLEEDITOR_H
 
 #include <QMainWindow>
+#include <QGraphicsVideoItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +18,12 @@ public:
     SimpleEditor(QWidget *parent = nullptr);
     ~SimpleEditor();
 
+protected:
+    void updateVideoViewFit();
+    void resizeEvent(QResizeEvent* event);
+
 private:
     Ui::SimpleEditor *ui;
+    QGraphicsVideoItem* videoItem;
 };
 #endif // SIMPLEEDITOR_H
