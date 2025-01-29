@@ -1,9 +1,9 @@
 #include "simpleeditor.h"
 #include "./ui_simpleeditor.h"
-#include <QMediaPlayer>
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QPalette>
+#include <QFileDialog>
 
 SimpleEditor::SimpleEditor(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +18,7 @@ SimpleEditor::SimpleEditor(QWidget *parent)
     ui->widget_grid->setAutoFillBackground(true);
 
     // Video player
-    QMediaPlayer* player = new QMediaPlayer(this);
+    player = new QMediaPlayer(this);
     videoItem = new QGraphicsVideoItem;
     player->setVideoOutput(videoItem);
     QGraphicsScene* gs = new QGraphicsScene(this);
@@ -29,6 +29,7 @@ SimpleEditor::SimpleEditor(QWidget *parent)
     updateVideoViewFit();
 
     connect(gs, &QGraphicsScene::sceneRectChanged, this, &SimpleEditor::updateVideoViewFit);
+    connect(ui->actionOpenVideo, &QAction::triggered, this, &SimpleEditor::selectVideoFile);
 
     player->setSource(QUrl("https://cdn.mikz.dev/hackutd-devday-workshop/videos/ass-class.mp4"));
     player->play();
@@ -50,4 +51,14 @@ void SimpleEditor::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
     updateVideoViewFit();
+}
+
+void SimpleEditor::selectVideoFile()
+{
+    // Create video select dialog
+    fileName = QFileDialog::getOpenFileName(this, "Open Video", "/home", "Videos (*.mp4 *.mov *.avi)");
+
+    // Update video
+    player->setSource(QUrl::fromLocalFile(fileName));
+    player->play();
 }
