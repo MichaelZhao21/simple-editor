@@ -2,8 +2,8 @@
 #define SIMPLEEDITOR_H
 
 #include <QMainWindow>
-#include <QGraphicsVideoItem>
 #include <QMediaPlayer>
+#include "components/videoplayer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,18 +19,14 @@ public:
     SimpleEditor(QWidget *parent = nullptr);
     ~SimpleEditor();
 
-protected:
-    void updateVideoViewFit();
-    void resizeEvent(QResizeEvent* event);
-    void updateVideo(QString fileName);
-
 private:
     Ui::SimpleEditor *ui;
-    QGraphicsVideoItem* videoItem;
-    QString fileName;
-    QMediaPlayer* player;
+    VideoPlayer *player;
 
 public slots:
     void selectVideoFile();
+
+signals:
+    void videoFileChanged(QString fileName);
 };
 #endif // SIMPLEEDITOR_H

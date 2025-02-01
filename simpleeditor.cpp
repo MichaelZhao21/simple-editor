@@ -11,28 +11,15 @@ SimpleEditor::SimpleEditor(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // ui->widget_grid
-    QPalette pal = QPalette();
-    pal.setColor(QPalette::Window, Qt::black);
-    ui->widget_grid->setPalette(pal);
-    ui->widget_grid->setAutoFillBackground(true);
-
     // Video player
-    player = new QMediaPlayer(this);
-    videoItem = new QGraphicsVideoItem;
-    player->setVideoOutput(videoItem);
-    QGraphicsScene* gs = new QGraphicsScene(this);
-    gs->addItem(videoItem);
-    ui->videoView->setScene(gs);
-    ui->videoView->show();
-    ui->videoView->setRenderHint(QPainter::SmoothPixmapTransform);
-    updateVideoViewFit();
+    player = new VideoPlayer;
+    ui->main_workspace->addWidget(player);
 
-    connect(gs, &QGraphicsScene::sceneRectChanged, this, &SimpleEditor::updateVideoViewFit);
+    // Connect menu button to functions
     connect(ui->actionOpenVideo, &QAction::triggered, this, &SimpleEditor::selectVideoFile);
 
-    player->setSource(QUrl("https://cdn.mikz.dev/hackutd-devday-workshop/videos/ass-class.mp4"));
-    player->play();
+    // Connect video player to file change action
+    connect(this, &SimpleEditor::videoFileChanged, player, &VideoPlayer::setVideoFile);
 }
 
 SimpleEditor::~SimpleEditor()
@@ -40,25 +27,11 @@ SimpleEditor::~SimpleEditor()
     delete ui;
 }
 
-void SimpleEditor::updateVideoViewFit()
-{
-    if (videoItem) {
-        ui->videoView->fitInView(videoItem, Qt::KeepAspectRatio);
-    }
-}
-
-void SimpleEditor::resizeEvent(QResizeEvent* event)
-{
-    QMainWindow::resizeEvent(event);
-    updateVideoViewFit();
-}
-
 void SimpleEditor::selectVideoFile()
 {
     // Create video select dialog
-    fileName = QFileDialog::getOpenFileName(this, "Open Video", "/home", "Videos (*.mp4 *.mov *.avi)");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open Video", "/home", "Videos (*.mp4 *.mov *.avi)");
 
     // Update video
-    player->setSource(QUrl::fromLocalFile(fileName));
-    player->play();
+    emit videoFileChanged(fileName);
 }

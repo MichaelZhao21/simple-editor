@@ -21,11 +21,7 @@
        <layout class="QVBoxLayout" name="sidebar"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="main_workspace">
-        <item>
-         <widget class="QGraphicsView" name="videoView"/>
-        </item>
-       </layout>
+       <layout class="QVBoxLayout" name="main_workspace"/>
       </item>
      </layout>
     </item>

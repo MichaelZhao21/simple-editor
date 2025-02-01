@@ -19,6 +19,9 @@ set(PROJECT_SOURCES
         simpleeditor.cpp
         simpleeditor.h
         simpleeditor.ui
+        components/videoplayer.cpp
+        components/videoplayer.h
+        components/videoplayer.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
