@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QPalette>
 #include <QFileDialog>
+#include <QShortcut>
+#include <QKeySequence>
 
 SimpleEditor::SimpleEditor(QWidget *parent)
     : QMainWindow(parent)
@@ -14,6 +16,10 @@ SimpleEditor::SimpleEditor(QWidget *parent)
     // Video player
     player = new VideoPlayer;
     ui->main_workspace->addWidget(player);
+
+    // Create key sequence
+    QShortcut* openShortcut = new QShortcut(QKeySequence::Open, this);
+    connect(openShortcut, &QShortcut::activated, this, &SimpleEditor::selectVideoFile);
 
     // Connect menu button to functions
     connect(ui->actionOpenVideo, &QAction::triggered, this, &SimpleEditor::selectVideoFile);

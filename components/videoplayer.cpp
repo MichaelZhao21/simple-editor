@@ -7,6 +7,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 {
     ui->setupUi(this);
     maxPosition = 0.0f;
+    paused = true;
 
     // Create Media Player and video item
     // then add video item to player
@@ -35,6 +36,9 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     // Update duration display on change
     connect(player, &QMediaPlayer::positionChanged, this, &VideoPlayer::setPositionDisplay);
     connect(player, &QMediaPlayer::seekableChanged, this, &VideoPlayer::toggleActions);
+
+    // Action buttons
+    connect(ui->playPause, &QPushButton::clicked, this, &VideoPlayer::playPause);
 }
 
 VideoPlayer::~VideoPlayer()
@@ -77,11 +81,23 @@ void VideoPlayer::toggleActions(bool seekable) {
     if (!seekable) {
         ui->playPause->setDisabled(true);
         maxPosition = 0;
+        paused = true;
         return;
     }
 
     if (player->isSeekable()) {
         ui->playPause->setDisabled(false);
         maxPosition = player->duration();
+        paused = false;
+    }
+}
+
+void VideoPlayer::playPause() {
+    paused = !paused;
+    ui->playPause->setText(QString::fromStdString(paused ? "Play" : "Pause"));
+    if (paused) {
+        player->pause();
+    } else {
+        player->play();
     }
 }

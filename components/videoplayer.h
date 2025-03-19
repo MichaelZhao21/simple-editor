@@ -5,6 +5,7 @@
 #include <QGraphicsVideoItem>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,6 +27,7 @@ protected:
     void updateVideo(QString fileName);
     void setPositionDisplay(qint64 position);
     void toggleActions(bool seekable);
+    void playPause();
 
 private:
     Ui::VideoPlayer *ui;
@@ -34,6 +36,7 @@ private:
     QGraphicsVideoItem *videoItem;
     QString fileName;
     float maxPosition;
+    bool paused;
 
 public slots:
     void setVideoFile(QString fileName);
