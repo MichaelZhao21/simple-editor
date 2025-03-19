@@ -6,6 +6,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , ui(new Ui::VideoPlayer)
 {
     ui->setupUi(this);
+    maxPosition = 0.0f;
 
     // Create Media Player and video item
     // then add video item to player
@@ -25,11 +26,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::SmoothPixmapTransform);
     updateVideoViewFit();
 
-    // Set default video
-    // remove once done
-    // player->setSource(QUrl("https://cdn.mikz.dev/hackutd-devday-workshop/videos/ass-class.mp4"));
-    player->setSource(QUrl::fromLocalFile("/home/mikey/Downloads/ElephantsDream.mp4"));
-    player->play();
+    // Make sure audio is playing
     audio->setVolume(40);
 
     // Update video size on resize
@@ -64,17 +61,27 @@ void VideoPlayer::setVideoFile(QString newFileName) {
 }
 
 void VideoPlayer::setPositionDisplay(qint64 position) {
-    ui->timeText->setText(QString::number(position / 1000.0));
+    // Update the display
+    ui->timeText->setText(QString::number(position / 1000.0) + QString::fromStdString("/") + QString::number(maxPosition / 1000.0));
+
+    // Update the seek bar
+    if (maxPosition == 0) {
+        ui->scrubberDisplay->setFillPercent(0.0f);
+    } else {
+        ui->scrubberDisplay->setFillPercent(position / maxPosition);
+    }
 }
 
 void VideoPlayer::toggleActions(bool seekable) {
     // If not seekable, disable all actions
     if (!seekable) {
         ui->playPause->setDisabled(true);
+        maxPosition = 0;
         return;
     }
 
     if (player->isSeekable()) {
         ui->playPause->setDisabled(false);
+        maxPosition = player->duration();
     }
 }

@@ -14,22 +14,76 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QGraphicsView" name="graphicsView"/>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="toolbar">
+      <layout class="QVBoxLayout" name="toolbar">
        <item>
-        <widget class="QTextBrowser" name="timeText"/>
+        <layout class="QHBoxLayout" name="scrubber">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="Scrubber" name="scrubberDisplay" native="true"/>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QToolButton" name="playPause">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="actionButtons">
+         <item>
+          <widget class="QTextBrowser" name="timeText">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>16</pointsize>
+            </font>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="playPause">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
@@ -37,6 +91,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Scrubber</class>
+   <extends>QWidget</extends>
+   <header>scrubber.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

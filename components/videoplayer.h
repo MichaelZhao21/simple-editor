@@ -33,6 +33,7 @@ private:
     QAudioOutput *audio;
     QGraphicsVideoItem *videoItem;
     QString fileName;
+    float maxPosition;
 
 public slots:
     void setVideoFile(QString fileName);
