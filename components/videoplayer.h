@@ -40,6 +40,7 @@ private:
 
 public slots:
     void setVideoFile(QString fileName);
+    void seekToPosition(qreal percent);
 };
 
 #endif // VIDEOPLAYER_H

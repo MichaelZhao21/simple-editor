@@ -32,3 +32,18 @@ void Scrubber::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.fillRect(rect, QColor(0, 0, 0));
 }
+
+void Scrubber::enterEvent(QEnterEvent *event)
+{
+    this->setCursor(QCursor(Qt::PointingHandCursor));
+}
+
+void Scrubber::leaveEvent(QEvent *event)
+{
+    this->setCursor(QCursor(Qt::ArrowCursor));
+}
+
+void Scrubber::mousePressEvent(QMouseEvent *event) {
+    qreal pos = event->position().x() / this->width();
+    emit seeked(pos);
+}

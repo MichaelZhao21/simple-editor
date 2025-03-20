@@ -36,6 +36,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     // Update duration display on change
     connect(player, &QMediaPlayer::positionChanged, this, &VideoPlayer::setPositionDisplay);
     connect(player, &QMediaPlayer::seekableChanged, this, &VideoPlayer::toggleActions);
+    connect(ui->scrubberDisplay, &Scrubber::seeked, this, &VideoPlayer::seekToPosition);
 
     // Action buttons
     connect(ui->playPause, &QPushButton::clicked, this, &VideoPlayer::playPause);
@@ -64,7 +65,8 @@ void VideoPlayer::setVideoFile(QString newFileName) {
     player->play();
 }
 
-void VideoPlayer::setPositionDisplay(qint64 position) {
+void VideoPlayer::setPositionDisplay(qint64 position)
+{
     // Update the display
     ui->timeText->setText(QString::number(position / 1000.0) + QString::fromStdString("/") + QString::number(maxPosition / 1000.0));
 
@@ -76,7 +78,8 @@ void VideoPlayer::setPositionDisplay(qint64 position) {
     }
 }
 
-void VideoPlayer::toggleActions(bool seekable) {
+void VideoPlayer::toggleActions(bool seekable)
+{
     // If not seekable, disable all actions
     if (!seekable) {
         ui->playPause->setDisabled(true);
@@ -92,7 +95,8 @@ void VideoPlayer::toggleActions(bool seekable) {
     }
 }
 
-void VideoPlayer::playPause() {
+void VideoPlayer::playPause()
+{
     paused = !paused;
     ui->playPause->setText(QString::fromStdString(paused ? "Play" : "Pause"));
     if (paused) {
@@ -100,4 +104,9 @@ void VideoPlayer::playPause() {
     } else {
         player->play();
     }
+}
+
+void VideoPlayer::seekToPosition(qreal percent)
+{
+    player->setPosition(percent * maxPosition);
 }
